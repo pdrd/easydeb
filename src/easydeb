@@ -79,7 +79,11 @@ def load_config(ctx, recipe):
 def copy_files(ctx):
 	for filepath in ctx['json']['files']:
 		buildpath = path.normpath(path.join(ctx['build_dir'], filepath))
-		tmppath = path.normpath(path.join(ctx['tmp_dir'], ctx['json']['files'][filepath]))
+		outfilepath = ctx['json']['files'][filepath]
+		if not outfilepath.startswith('.'):
+			if outfilepath.startswith(path.sep):
+				outfilepath = '.' + ctx['json']['files'][filepath]
+		tmppath = path.normpath(path.join(ctx['tmp_dir'], outfilepath))
 
 		if path.isfile(buildpath): # if buildpath is a file, simply copy it
 			os.makedirs(path.dirname(tmppath), exist_ok=True)

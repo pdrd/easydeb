@@ -97,6 +97,9 @@ def create_meta_dir(ctx):
 
 		line = 'Version: {}\n'.format(ctx['json']['version'])
 		f.write(line)
+		
+		line = 'Depends: {}\n'.format(ctx['json']['depends'])
+		f.write(line)
 
 		line = 'Section: {}\n'.format(ctx['json']['section'])
 		f.write(line)

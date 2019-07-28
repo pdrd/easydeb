@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "arch": "amd64",
     "section": "misc",
+    "depends": "",
     "description": "Hello world example from easydeb.",
 
     "maintainer": "Philipp Reusch",

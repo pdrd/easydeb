@@ -53,6 +53,15 @@ def get_dirsize(start_path = '.'):
 			total_size += os.path.getsize(fp)
 	return total_size
 
+def check_requirements():
+	if shutil.which('fakeroot') is None:
+		print('Requirement not satisfied: fakeroot has to be available on $PATH!')
+		exit(1)
+	
+	if shutil.which('dpkg-deb') is None:
+		print('Requirement not satisfied: dpkg-deb has to be available on $PATH!')
+		exit(1)
+
 def load_config(ctx, recipe):
 	try:
 		ctx['json'] = json.load(recipe)
@@ -168,6 +177,9 @@ def create_deb(ctx):
 @click.argument('build-dir', type=click.Path(exists=True, dir_okay=True))
 @click.argument('out-dir', type=click.Path(exists=True, dir_okay=True, writable=True))
 def run(recipe, build_dir, out_dir):
+
+	check_requirements()
+
 	ctx = {
 		'build_dir': path.abspath(build_dir),
 		'out_dir': path.abspath(out_dir)

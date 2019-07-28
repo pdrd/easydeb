@@ -37,3 +37,34 @@ install requirements from file:
 ```bash
 pip install -r requirements.txt
 ```
+
+
+control file will be created:
+
+```
+Package: [name]
+Version: [version]
+Section: [section]
+Priority: optional
+Architecture: [arch]
+Installed-Size: [size] # dynamic attribute
+Maintainer: [name] <[email]>
+Description: [description]
+```
+
+compat is version 11
+
+copyright is empty
+
+changelog will contain one entry
+
+```
+[name] ([version]) UNRELEASED; urgency=low binary-only=yes
+
+# for change in changes:
+  * [change]
+
+ -- [name] <[email]>  [created_by]
+
+ 
+```

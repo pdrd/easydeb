@@ -166,12 +166,12 @@ def create_deb(ctx):
 	create_meta_dir(ctx) # create the corresponding metadata in tmp_dir/DEBIAN
 	build_deb(ctx) # build the deb file
 
+	shutil.rmtree(ctx['tmp_dir']) # finally remove the tmp_dir to free space
+
 	if path.isfile(ctx['out_path']):
 		print('Generated package {}.'.format(ctx['out_path']))
-		shutil.rmtree(ctx['tmp_dir']) # finally remove the tmp_dir to free space
 	else:
-		print('Something went wrong..')
-		print('Take a look in the tmp_dir {}'.format(ctx['tmp_dir']))
+		exit_error('Packaging failed..')
 
 @click.command()
 @click.argument('recipe', type=click.File(mode='r'))

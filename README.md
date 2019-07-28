@@ -21,9 +21,9 @@ Create a json file with following structure:
     "changes": [ // changes for latest changelog entry
         "Initial custom release of bind-exporter.",
         "Building of .deb package with easydeb."
-    ]
+    ],
 
-    "shell": "/bin/bash", // specify the shell command used to run the commands
+    "shell": "/bin/bash" // specify the shell command used to run the commands
 }
 ```
 
@@ -66,5 +66,5 @@ changelog will contain one entry
 
  -- [name] <[email]>  [created_by]
 
- 
+
 ```

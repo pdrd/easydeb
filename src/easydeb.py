@@ -136,6 +136,8 @@ def create_deb(ctx):
 	else:
 		print('Something went wrong..')
 
+	shutil.rmtree(ctx['tmp_dir'])
+
 @click.command()
 @click.argument('recipe', type=click.File(mode='r'))
 @click.argument('build-dir', type=click.Path(exists=True, dir_okay=True))

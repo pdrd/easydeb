@@ -10,6 +10,39 @@ import glob
 import shutil
 
 import click
+import jsonschema
+
+schema = {
+	"type" : "object",
+	"properties" : {
+		"name" : { "type" : "string" },
+		"version" : { "type" : "string" },
+		"arch" : { "type" : "string" },
+		"section" : { "type" : "string" },
+		"depends" : { "type" : "string" },
+		"description" : { "type" : "string" },
+		"maintainer" : { "type" : "string" },
+		"email" : { "type" : "string" },
+		"changed_by" : { "type" : "string" },
+		"files" : {
+			"type": "object",
+			"minProperties": 1,
+			"patternProperties": {
+				".*": { "type": "string" }
+			}
+		},
+		"changes" : {
+			"type": "array",
+			"items": {
+				"type": "string"
+			},
+			"minItems": 1,
+		},
+		"shell" : { "type" : "string" },
+	},
+	"required": [ "name", "version", "arch", "section", "depends", "description", "maintainer", "email", "changed_by", "files", "changes", "shell" ],
+	"additionalProperties": False
+}
 
 # https://gist.github.com/SteveClement/3755572
 def get_dirsize(start_path = '.'):
@@ -21,7 +54,17 @@ def get_dirsize(start_path = '.'):
 	return total_size
 
 def load_config(ctx, recipe):
-	ctx['json'] = json.load(recipe)
+	try:
+		ctx['json'] = json.load(recipe)
+		jsonschema.validate(instance=ctx['json'], schema=schema)
+	except json.decoder.JSONDecodeError as e:
+		print('JSON decoding failed: {}'.format(e))
+		print('Recipe file seems to be no valid JSON.')
+		exit(1)
+	except jsonschema.exceptions.ValidationError as e:
+		print('Schema validation failed: {}'.format(e))
+		print('Recipe file does not comply the schema.')
+		exit(1)
 
 def copy_files(ctx):
 	for filepath in ctx['json']['files']:

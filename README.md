@@ -25,10 +25,10 @@ This does not create a valid .deb package for submission to the official debian 
 
 There are two ways to install easydeb. Manually or by installing the prebundled wheel file.
 
-### Private wheel mirror
+### Private pypi mirror
 
 ```console
-$ pip install https://mirrors.pdrd.de/python/easydeb-1.0.0-py3-none-any.whl
+$ pip install -i https://pypi.pdrd.de/pdrd/github/+simple/ easydeb
 ```
 
 ### Manual

@@ -1,4 +1,4 @@
-# easydeb
+# easydeb [![Build Status](https://travis-ci.org/pdrd/easydeb.svg?branch=master)](https://travis-ci.org/pdrd/easydeb)
 
 Easily create private .deb packages from a list of files. Developed and tested on debian 9.7 (stretch) with python 3.6.
 

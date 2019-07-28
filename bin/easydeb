@@ -1,5 +1,1 @@
-#!/bin/sh
-
-ROOT="$( cd "$(dirname "$0")" ; pwd -P )/.."
-
-python3 "$ROOT/src/easydeb.py" $@
+../src/easydeb.py

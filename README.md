@@ -51,11 +51,43 @@ Options:
   --help  Show this message and exit.
 ```
 
-The `RECIPE` is a configuration file described in detail in a further section. The `BUILD_DIR` is the directory where you built the executable to distribute. The `OUT_DIR` is the directory where the final `.deb` file will be saved.
+The `RECIPE` is a configuration file described in detail in the `Recipe` section. The `BUILD_DIR` is the directory where you built the executable to distribute. The `OUT_DIR` is the directory where the final `.deb` file will be saved.
 
-## Recipe
+## Example
 
-A recipe is simply a .json file with predefined schema. The following is the example recipe file with comments. It should be self-explanatory.
+Take a look at the [example](example) in the repository. You can access it via the browser or clone the repository.
+
+**Files**
+- example/build_deb.sh - build the .deb file
+- example/hello.json - easydeb recipe file
+- example/hello.sh - executable to bundle
+
+The example bundles a simple shell file [hello.sh](example/hello.sh):
+
+```bash
+#!/bin/bash
+
+if [ -z "$1" ]; then
+    echo "You don't wanna tell me you're name?"
+else
+    echo "Hello $1!"
+fi
+```
+
+It prints `Hello [arg1]!` to the screen, if the first argument exists, otherwise it prints another message.
+
+To create the bundled .deb file, simple execute the shell file [build_deb.sh](example/build_deb.sh). It sets the environment variables and calls easydeb:
+
+```console
+$ RECIPE="./hello.json" # path to easydeb recipe file
+$ BUILD_DIR="./" # path to binary files
+$ OUT_DIR="./" # the .deb file will be placed here
+$ easydeb "$RECIPE" "$BUILD_DIR" "$OUT_DIR" 
+dpkg-deb: building package 'easydeb-hello' in '/opt/easydeb/example/easydeb-hello_1.0.0_amd64.deb'.
+Generated package /opt/easydeb/example/easydeb-hello_1.0.0_amd64.deb.
+```
+
+The used recipe file [hello.json](example/hello.json) has the following content:
 
 ```javascript
 {
@@ -71,7 +103,7 @@ A recipe is simply a .json file with predefined schema. The following is the exa
     "changed_by": "Mon, 04 May 2019 00:11:22 +0000", // changed_by for latest changelog entry
  
     "files": { // specify the files to copy from the BUILD_DIR to the OUT_DIR
-        "./hello.sh": "/usr/local/bin/easydeb-hello" // install BUILD_DIR/hello.sh to /usr/local/bin/easydeb-hello 
+        "./hello.sh": "/usr/local/bin/easydeb-hello" // installs BUILD_DIR/hello.sh to /usr/local/bin/easydeb-hello 
     },
 
     "changes": [ // changes for latest changelog entry
@@ -82,6 +114,51 @@ A recipe is simply a .json file with predefined schema. The following is the exa
     "shell": "/bin/bash" // specify the shell command used to run the commands
 }
 ```
+
+After building the `easydeb-hello_1.0.0_amd64.deb`, it can be installed via:
+
+```console
+$ dpkg -i easydeb-hello_1.0.0_amd64.deb 
+Selecting previously unselected package easydeb-hello.
+(Reading database ... 83093 files and directories currently installed.)
+Preparing to unpack easydeb-hello_1.0.0_amd64.deb ...
+Unpacking easydeb-hello (1.0.0) ...
+Setting up easydeb-hello (1.0.0) ...
+```
+
+From now on the shell script [hello.sh](example/hello.sh) is installed under `/usr/local/bin/easydeb-hello` and if `/usr/local/bin` is available on `$PATH` it can be called like this:
+
+```console
+$ easydeb-hello "world"
+Hello world!
+```
+
+The package information can be queried via dpkg:
+
+```console
+$ dpkg -s easydeb-hello
+Package: easydeb-hello
+Status: install ok installed
+Priority: optional
+Section: misc
+Installed-Size: 110
+Maintainer: John Doe <john@example.com>
+Architecture: amd64
+Version: 1.0.0
+Description: Hello world example from easydeb.
+```
+
+The package can be removed via it's name:
+
+```console
+$ dpkg -r easydeb-hello
+```
+
+## Recipe
+
+A recipe is simply a .json file with predefined schema. The schema follows the [json-schema.org](https://json-schema.org/) drafts and is defined in [src/easydeb](src/easydeb). Because of the pretty self-explanatory structure, take a look at the `Example` section with the example recipe file [hello.json](example/hello.json).
+
+Apart from that the `Generated DEBIAN meta_dir` section contains information about where the variables from the recipe file are used.
 
 ## Generated DEBIAN meta_dir
 

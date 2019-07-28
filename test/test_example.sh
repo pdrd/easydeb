@@ -26,3 +26,5 @@ echo $INFO | grep -q "Description: Hello world example from easydeb." && SUCC=$(
 if [ "$SUCC" -lt 9 ]; then
     exit 1
 fi
+
+echo "test/test_example.sh successful"

@@ -49,6 +49,8 @@ Run in project root:
 $  python3 setup.py sdist bdist_wheel
 ```
 
+The wheel and source files will be in `dist`.
+
 ## Usage
 
 Run easydeb from your favorite terminal.
@@ -168,18 +170,18 @@ $ dpkg -r easydeb-hello
 
 A recipe is simply a .json file with predefined schema. The schema follows the [json-schema.org](https://json-schema.org/) drafts and is defined in [src/easydeb](src/easydeb). Because of the pretty self-explanatory structure, take a look at the `Example` section with the example recipe file [hello.json](example/hello.json).
 
-Apart from that the `Generated DEBIAN meta_dir` section contains information about where the variables from the recipe file are used.
+Apart from that, the `DEBIAN metadata directory` section contains information about where the variables from the recipe file are used.
 
-## Metadata in /DEBIAN
+## DEBIAN metadata directory
 
-Packaging for debian is a very complicated task, which is for some extents documented on[wiki.debian.org/Packaging](https://wiki.debian.org/Packaging). The policy for packages are very strict and this is good. It makes debian one of the most-stable distributions out there.
+Packaging for debian is a very complicated task, which is for some extents documented on [wiki.debian.org/Packaging](https://wiki.debian.org/Packaging). The policies for packages are very strict and this is good. It makes debian one of the most-stable distributions out there.
 
 Easydeb bypasses most of the policies and creates only the files, which are required at minimum to package a .deb file with `dpkg-deb`. To avoid any problems with this, easydeb uses the following defaults:
 
 - **DEBIAN/changelog**: The `distributions` value is `UNRELEASED`, which disables the upload to a public repository. Reference: [debian.org maint-guide](https://www.debian.org/doc/manuals/maint-guide/dreq.en.html)
 - **DEBIAN/control**: The `Priority` is `optional`, because "Packages with a priority of optional may conflict with each other." Reference: [debian.org policy - priorities](https://www.debian.org/doc/debian-policy/ch-archive.html#s-priorities)
 
-The following subsections describe, how the corresponding files are created. The notation `[name]` in this chapter refers to the value defined in the recipe file.
+The following subsections describe how the files in the `DEBIAN` directory are created. The notation `[name]` in this section refers to the value defined in the recipe file.
 
 #### DEBIAN/changelog
 

@@ -14,7 +14,7 @@ setuptools.setup(
     url="https://github.com/pdrd/easydeb",
     package_dir={'': 'src'},
     packages=setuptools.find_packages(),
-    install_requires=['Click==7.*'],
+    install_requires=['Click==7.*','jsonschema==3.*'],
     scripts=['src/easydeb'],
     classifiers=[
         "Programming Language :: Python :: 3",

@@ -57,10 +57,14 @@ Run easydeb from your favorite terminal.
 
 ```console
 $ easydeb --help
-Usage: easydeb [OPTIONS] RECIPE BUILD_DIR OUT_DIR
+Usage: easydeb [OPTIONS] RECIPE
+
+  Easily create private .deb packages from a list of files.
 
 Options:
-  --help  Show this message and exit.
+  --build-dir PATH  Path to build dir with files to package. Defaults to RECIPE dir.
+  --out-dir PATH    Path to output dir for .deb file. Defaults to RECIPE dir.
+  --help            Show this message and exit.
 ```
 
 The `RECIPE` is the path to a configuration file described in the `Example` and `Recipe` sections. The `BUILD_DIR` is the directory where you built the executable to distribute. The `OUT_DIR` is the directory where the final `.deb` file will be saved.
@@ -91,10 +95,7 @@ It prints `Hello [arg1]!` to the screen, if the first argument exists, otherwise
 To create the bundled .deb file, simple execute the shell file [build_deb.sh](example/build_deb.sh). It sets the environment variables and calls easydeb:
 
 ```console
-$ RECIPE="./hello.json" # path to easydeb recipe file
-$ BUILD_DIR="./" # path to binary files
-$ OUT_DIR="./" # the .deb file will be placed here
-$ easydeb "$RECIPE" "$BUILD_DIR" "$OUT_DIR" 
+$ easydeb "./hello.json" 
 dpkg-deb: building package 'easydeb-hello' in '/opt/easydeb/example/easydeb-hello_1.0.0_amd64.deb'.
 Generated package /opt/easydeb/example/easydeb-hello_1.0.0_amd64.deb.
 ```

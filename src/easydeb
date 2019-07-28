@@ -179,15 +179,15 @@ def create_deb(ctx):
 
 @click.command()
 @click.argument('recipe', type=click.File(mode='r'))
-@click.argument('build-dir', type=click.Path(exists=True, dir_okay=True))
-@click.argument('out-dir', type=click.Path(exists=True, dir_okay=True, writable=True))
+@click.option('--build-dir', default=None, help="Path to build dir with files to package. Defaults to RECIPE dir.", type=click.Path(exists=True, dir_okay=True))
+@click.option('--out-dir', default=None, help="Path to output dir for .deb file. Defaults to RECIPE dir.", type=click.Path(exists=True, dir_okay=True, writable=True))
 def run(recipe, build_dir, out_dir):
-
+	"""Easily create private .deb packages from a list of files."""
 	check_requirements()
 
 	ctx = {
-		'build_dir': path.abspath(build_dir),
-		'out_dir': path.abspath(out_dir)
+		'build_dir': path.abspath(build_dir) if build_dir else path.dirname(recipe.name),
+		'out_dir': path.abspath(out_dir) if out_dir else path.dirname(recipe.name)
 	}
 
 	load_config(ctx, recipe)

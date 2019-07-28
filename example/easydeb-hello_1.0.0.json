@@ -6,9 +6,9 @@
     "depends": "",
     "description": "Hello world example from easydeb.",
 
-    "maintainer": "Philipp Reusch",
-    "email": "philipp.reusch@skipnet.de",
-    "changed_by": "Sun, 28 Jul 2019 17:30:00 +0000",
+    "maintainer": "John Doe",
+    "email": "john@example.com",
+    "changed_by": "Mon, 04 May 2019 00:11:22 +0000",
  
     "files": {
         "./hello.sh": "/usr/local/bin/easydeb-hello"

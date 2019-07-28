@@ -66,9 +66,9 @@ A recipe is simply a .json file with predefined schema. The following is the exa
     "depends": "", // dependencies of package
     "description": "Hello world example from easydeb.", // description of package
 
-    "maintainer": "Philipp Reusch", // maintainer for latest changelog entry
-    "email": "philipp.reusch@skipnet.de", // email for latest changelog entry
-    "changed_by": "Sun, 28 Jul 2019 17:30:00 +0000", // changed_by for latest changelog entry
+    "maintainer": "John Doe", // maintainer for latest changelog entry
+    "email": "john@example.com", // email for latest changelog entry
+    "changed_by": "Mon, 04 May 2019 00:11:22 +0000", // changed_by for latest changelog entry
  
     "files": { // specify the files to copy from the BUILD_DIR to the OUT_DIR
         "./hello.sh": "/usr/local/bin/easydeb-hello" // install BUILD_DIR/hello.sh to /usr/local/bin/easydeb-hello 

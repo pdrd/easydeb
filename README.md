@@ -26,3 +26,14 @@ Create a json file with following structure:
     "shell": "/bin/bash", // specify the shell command used to run the commands
 }
 ```
+
+
+development and testing with python 3.6
+
+pip has to be available
+
+install requirements from file:
+
+```bash
+pip install -r requirements.txt
+```

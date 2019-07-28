@@ -1,6 +1,6 @@
 dist: stretch
 language: python
-script: make test
+script: test/test_example.sh
 python:
   - "3.6"
 before_install:

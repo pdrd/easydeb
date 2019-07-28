@@ -135,3 +135,7 @@ Run in project root:
 ```
 $  python3 setup.py sdist bdist_wheel
 ```
+
+## License
+
+The MIT License - see [LICENSE](LICENSE) file.

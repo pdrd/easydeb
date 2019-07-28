@@ -25,12 +25,14 @@ This does not create a valid .deb package for submission to the official debian 
 
 There are two ways to install easydeb. Manually or by installing the prebundled wheel file.
 
-**Private wheel mirror**
+### Private wheel mirror
+
 ```console
 $ pip install https://mirrors.pdrd.de/python/easydeb-1.0.0-py3-none-any.whl
 ```
 
-**Manual**
+### Manual
+
 ```console
 $ git clone https://github.com/pdrd/easydeb.git
 $ cd easydeb
@@ -38,6 +40,14 @@ $ pip install -r requirements.txt
 ```
 
 Optional: Add the `bin` directory to your `$PATH`.
+
+#### Build wheel
+
+Run in project root:
+
+```
+$  python3 setup.py sdist bdist_wheel
+```
 
 ## Usage
 
@@ -51,7 +61,7 @@ Options:
   --help  Show this message and exit.
 ```
 
-The `RECIPE` is a configuration file described in detail in the `Recipe` section. The `BUILD_DIR` is the directory where you built the executable to distribute. The `OUT_DIR` is the directory where the final `.deb` file will be saved.
+The `RECIPE` is the path to a configuration file described in the `Example` and `Recipe` sections. The `BUILD_DIR` is the directory where you built the executable to distribute. The `OUT_DIR` is the directory where the final `.deb` file will be saved.
 
 ## Example
 
@@ -160,20 +170,25 @@ A recipe is simply a .json file with predefined schema. The schema follows the [
 
 Apart from that the `Generated DEBIAN meta_dir` section contains information about where the variables from the recipe file are used.
 
-## Generated DEBIAN meta_dir
+## Metadata in /DEBIAN
 
-Only the minimal required files `changelog`, `compat`, `control` and `changelog` will be created based on the values specified in the recipe file.
+Packaging for debian is a very complicated task, which is for some extents documented on[wiki.debian.org/Packaging](https://wiki.debian.org/Packaging). The policy for packages are very strict and this is good. It makes debian one of the most-stable distributions out there.
 
-The notation `[name]` in this chapter refers to the value defined in the recipe file.
+Easydeb bypasses most of the policies and creates only the files, which are required at minimum to package a .deb file with `dpkg-deb`. To avoid any problems with this, easydeb uses the following defaults:
 
-**DEBIAN/changelog**
+- **DEBIAN/changelog**: The `distributions` value is `UNRELEASED`, which disables the upload to a public repository. Reference: [debian.org maint-guide](https://www.debian.org/doc/manuals/maint-guide/dreq.en.html)
+- **DEBIAN/control**: The `Priority` is `optional`, because "Packages with a priority of optional may conflict with each other." Reference: [debian.org policy - priorities](https://www.debian.org/doc/debian-policy/ch-archive.html#s-priorities)
+
+The following subsections describe, how the corresponding files are created. The notation `[name]` in this chapter refers to the value defined in the recipe file.
+
+#### DEBIAN/changelog
 
 The following template will be used.
 
 ```
 [name] ([version]) UNRELEASED; urgency=low binary-only=yes
 
-# for change in changes:
+# for change in [changes]:
   * [change]
 
  -- [name] <[email]>  [created_by]
@@ -182,17 +197,18 @@ The following template will be used.
 ```
 
 
-**DEBIAN/compat**
+#### DEBIAN/compat
 
-The required debhelper version is **11**.
+The required debhelper version and the file content is **11**.
 
-**DEBIAN/control**
+#### DEBIAN/control
 
 The following template will be used.
 
 ```
 Package: [name]
 Version: [version]
+Depends: [depends]
 Section: [section]
 Priority: optional
 Architecture: [arch]
@@ -201,17 +217,9 @@ Maintainer: [name] <[email]>
 Description: [description]
 ```
 
-**DEBIAN/copyright**
+#### DEBIAN/copyright
 
 This file will be empty.
-
-## Build wheel
-
-Run in project root:
-
-```
-$  python3 setup.py sdist bdist_wheel
-```
 
 ## License
 

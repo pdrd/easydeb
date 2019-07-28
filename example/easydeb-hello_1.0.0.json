@@ -1,0 +1,22 @@
+{
+    "name": "easydeb-hello",
+    "version": "1.0.0",
+    "arch": "amd64",
+    "section": "misc",
+    "description": "Hello world example from easydeb.",
+
+    "maintainer": "Philipp Reusch",
+    "email": "philipp.reusch@skipnet.de",
+    "changed_by": "Sun, 28 Jul 2019 17:30:00 +0000",
+ 
+    "files": {
+        "./hello.sh": "/usr/local/bin/easydeb-hello"
+    },
+
+    "changes": [
+        "Initial custom release of easydeb-hello.",
+        "Building of .deb package with easydeb."
+    ],
+
+    "shell": "/bin/bash"
+}

@@ -12,6 +12,7 @@ import shutil
 import click
 import jsonschema
 
+# jsonschema for a recipe file
 schema = {
 	"type" : "object",
 	"properties" : {
@@ -44,7 +45,11 @@ schema = {
 	"additionalProperties": False
 }
 
-# https://gist.github.com/SteveClement/3755572
+def exit_error(msg):
+	print(msg)
+	exit(1)
+
+# posted on https://gist.github.com/SteveClement/3755572
 def get_dirsize(start_path = '.'):
 	total_size = 0
 	for dirpath, dirnames, filenames in os.walk(start_path):
@@ -55,12 +60,10 @@ def get_dirsize(start_path = '.'):
 
 def check_requirements():
 	if shutil.which('fakeroot') is None:
-		print('Requirement not satisfied: fakeroot has to be available on $PATH!')
-		exit(1)
+		exit_error('Requirement not satisfied: fakeroot has to be available on $PATH!')
 	
 	if shutil.which('dpkg-deb') is None:
-		print('Requirement not satisfied: dpkg-deb has to be available on $PATH!')
-		exit(1)
+		exit_error('Requirement not satisfied: dpkg-deb has to be available on $PATH!')
 
 def load_config(ctx, recipe):
 	try:
@@ -68,12 +71,10 @@ def load_config(ctx, recipe):
 		jsonschema.validate(instance=ctx['json'], schema=schema)
 	except json.decoder.JSONDecodeError as e:
 		print('JSON decoding failed: {}'.format(e))
-		print('Recipe file seems to be no valid JSON.')
-		exit(1)
+		exit_error('Recipe file seems to be no valid JSON.')
 	except jsonschema.exceptions.ValidationError as e:
 		print('Schema validation failed: {}'.format(e))
-		print('Recipe file does not comply the schema.')
-		exit(1)
+		exit_error('Recipe file does not comply the schema.')
 
 def copy_files(ctx):
 	for filepath in ctx['json']['files']:
@@ -171,7 +172,6 @@ def create_deb(ctx):
 	else:
 		print('Something went wrong..')
 		print('Take a look in the tmp_dir {}'.format(ctx['tmp_dir']))
-	
 
 @click.command()
 @click.argument('recipe', type=click.File(mode='r'))

@@ -38,12 +38,15 @@ def validate_config(ctx):
 def copy_files(ctx):
 	for filepath in ctx['json']['files']:
 		buildpath = path.normpath(path.join(ctx['build_dir'], filepath))
-		tmppath = path.normpath(path.join(ctx['tmp_dir'], ctx['json']['files'][filepath]))
+		outpath = path.normpath(path.join(ctx['out_dir'], ctx['json']['files'][filepath]))
 
+		print(ctx['out_dir'])
+		print('OUT' + outpath)
 		if path.isfile(buildpath):
-			os.makedirs(path.dirname(tmppath), exist_ok=True)
-			shutil.copy2(buildpath, tmppath)
+			os.makedirs(path.dirname(outpath), exist_ok=True)
+			shutil.copy2(buildpath, outpath)
 		elif path.isdir(buildpath):
+			
 			globpath = buildpath
 			if not (globpath.endswith('*') or globpath.endswith('**')):
 				globpath = path.join(buildpath, '**')
@@ -51,7 +54,11 @@ def copy_files(ctx):
 
 			for filebuildpath in globs:
 				relpath = path.relpath(filebuildpath, buildpath)
-				fileoutpath = path.normpath(path.join(tmppath, relpath))
+				fileoutpath = path.normpath(path.join(outpath, relpath))
+				print("GLOB")
+				print(relpath)
+				print(filebuildpath)
+				print(fileoutpath)
 
 				if path.isfile(filebuildpath):
 					shutil.copy2(filebuildpath, fileoutpath)
@@ -59,8 +66,6 @@ def copy_files(ctx):
 					os.makedirs(fileoutpath, exist_ok=True)
 					shutil.copystat(filebuildpath, fileoutpath)
 					shutil.copymode(filebuildpath, fileoutpath)
-	
-	ctx['size'] = get_size(ctx['tmp_dir'])
 
 def create_meta_dir(ctx):
 	ctx['meta_dir'] = path.join(ctx['tmp_dir'], 'DEBIAN')
@@ -110,10 +115,10 @@ def create_meta_dir(ctx):
 		line = 'Installed-Size: {}\n'.format(ctx['size'])
 		f.write(line)
 
-		line = 'Maintainer: {} <{}>\n'.format(ctx['json']['maintainer'], ctx['json']['email'])
+		line = 'Maintainer: {}\n'.format(ctx['json']['name'])
 		f.write(line)
 
-		line = 'Description: {}\n'.format(ctx['json']['description'])
+		line = 'Description: {}\n'.format(ctx['json']['name'])
 		f.write(line)
 
 	with open(path_copyright,	"w+") as f:
@@ -121,20 +126,19 @@ def create_meta_dir(ctx):
 
 
 def create_deb(ctx):
+
 	ctx['tmp_dir'] = tempfile.mkdtemp()
 
+	print('tmp_dir={}'.format(ctx['tmp_dir']))
+
 	copy_files(ctx)
-	create_meta_dir(ctx)
+	print(get_size(ctx['tmp_dir']))
 
-	ctx['out_file'] = '{}_{}_{}.deb'.format(ctx['json']['name'], ctx['json']['version'], ctx['json']['arch'])
-	ctx['out_path'] = path.join(ctx['out_dir'], ctx['out_file'])
+	
 
-	subprocess.call('fakeroot dpkg-deb -b "{}" "{}"'.format(ctx['tmp_dir'], ctx['out_path']), executable=ctx['json']['shell'], shell=True)
 
-	if path.isfile(ctx['out_path']):
-		print('Generated package {}.'.format(ctx['out_path']))
-	else:
-		print('Something went wrong..')
+
+	#proc = subprocess.Popen(cmds, env=ctx['json']['env'], executable=ctx['json']['shell'], shell=True)
 
 @click.command()
 @click.argument('recipe', type=click.File(mode='r'))
@@ -150,9 +154,6 @@ def run(recipe, build_dir, out_dir):
 	validate_config(ctx)
 
 	create_deb(ctx)
-
-	print('Final context:')
-	print(ctx)
 
 if __name__ == '__main__':
 	run()

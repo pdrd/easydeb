@@ -11,4 +11,4 @@ deploy:
   user: "pdrd"
   password:
     secure: mJxrELVvOXsZpu2CdevmrkJQF2hjLm8Xjl73UG1my1puWQCbGsMXi+L7P8EfOHIMFsZOl0x28x8um0Yw3x+D8X6qhi4DZmm1lkMip5/r6ogTD1MLCHSig05MM/ttv3CK98ZuouL0sBV5knUME+j4rUWv8yzKLjEqbzjAN07FQ6mVhnzn9IsNbJgMHR3pHpPTgOasOj9YraQnQyV95xeBPMGeeLyFgmKmPGdJDK6HSdAnL3wj3kuMZOc/kw860A3ZGvNUyh9wI5y/JgzHYBo6IWGlGANii6bH9Cr/mRFKuz3pFa6whuncoTJj+mhpItGfKp2RUkxhS4u7eT6n0QHocIV3qkaF35fsIN6Nouwm5wNz5Z7Tb5mber/fAnfmP+fjv9ZCcBXiDagZhyLSEotXYTvJuo1i/wEQYIK5TkSF4UBDgJKVIr/pXdcayjPCXilRHnA7uuO4eSVjLirY3RyhPcD3VPI09k3LQcMeOuI0KZ4EIQsqtFVpQeD8wdBudrs+yS9RYqth+qaBRSXmi2dQ1RNnLxi/GYZPIuaJCCwazAvjBEJklWve7/dICsMXX/B3dtZyrowfMgR1gohu+/UKtOthsC1lp332e8zjfAUH275QxE5rO6l1N6FUJ6mjtLNMX3DFJJIE+Jwj4MwthGJCEMQX2q/RpycyKRY3SLm++kA=
-  server: https://pypi.pdrd.de/pdrd/github/+simple
+  server: https://pypi.pdrd.de/pdrd/github
